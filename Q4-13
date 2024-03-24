@@ -1,0 +1,41 @@
+#include<iostream>
+using namespace std;
+
+#define MILE_PER_KIKILOMETER 1.61
+
+void inputTime(int&, int&);
+void inputTime(double&);
+double convertToMPH(int minutes, int seconds);
+double convertToMPH(double speedKph);
+
+int main() {
+	int minutes, seconds;
+	double speedKph;
+
+	inputTime(minutes, seconds);
+	cout << "MPH = " << convertToMPH(minutes, seconds) << endl;
+	inputTime(speedKph);
+	cout << "MPH = " << convertToMPH(speedKph) << endl;
+	
+
+	return 0;
+}
+
+void inputTime(int& minutes, int& seconds) {
+	cout << "Enter the pace in minutes and seconds per mile separate by blanks" << endl;
+	cin >> minutes >> seconds;
+}
+
+double convertToMPH(int minutes, int seconds) {
+	double hours = double(minutes) / 60 + double(seconds) / 3600;
+
+	return 1 / hours;
+}
+void inputTime(double& speedKph) {
+	cout << "Enter the speed in kilometers per hour" << endl;
+	cin >> speedKph;
+}
+
+double convertToMPH(double speedKph) {
+	return MILE_PER_KIKILOMETER * speedKph;
+}
