@@ -1,0 +1,53 @@
+/* This program is to convert time from 24-hour notation to 12-hour notation. */
+#include<iostream>
+using namespace std;
+
+void inputTime(int*, int*);
+void convertTo12(int*, int* , char&);
+void outputTime(const int*, const int*, const char);
+bool againOrNot();
+
+int main() {
+	int hour, minute;
+	char am_or_pm = NULL;
+
+	cout << "24-hour notation to 12-hour notation converter.\n";
+
+	/* Operate the program as the user would like to. */
+	do {
+		inputTime(&hour, &minute);
+		convertTo12(&hour, &minute, am_or_pm);
+		outputTime(&hour, &minute, am_or_pm);
+	} while (againOrNot());
+
+	return 0;
+}
+
+/* Input hour and minute(24-hour notation). */
+void inputTime(int* hour, int* minute) {
+	cout << "\nEnter the hour and minute by 24-hour notation separate by blank." << endl;
+	cin >> *hour >> *minute;
+}
+
+/* Converts to 12-hour notation(Add A.M. or P.M.)*/
+void convertTo12(int* hour, int* minute, char& am_or_pm) {
+	am_or_pm = (*hour >= 12) ? 'P' : 'A';
+	*hour = (am_or_pm == 'P') ? *hour - 12 : *hour;
+}
+
+/* Output the result after convesion. */
+void outputTime(const int* hour, const int* minute, const char am_or_pm) {
+	string amPm = (am_or_pm == 'P') ? "P.M." : "A.M.";
+	cout << "Result of conversion. (12-notation)\n";
+	cout << *hour << ":" << *minute << ' ' << amPm << endl;
+}
+
+/* Asking user if he/she wants to use again or not. */
+bool againOrNot() {
+	char choice;
+
+	cout << "Would you like to use the program again(Y) or not(N)?\n";
+	cin >> choice;
+
+	return choice == 'Y';
+}
