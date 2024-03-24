@@ -1,0 +1,51 @@
+/* A text-based histogram for a quiz given to a class of students, the scale of grades is 0 ~ 5. */
+#include<iostream>
+using namespace std;
+
+/* The grade scale (0 to 5)*/
+#define GRADE_SCALE 6
+
+void printNotation();
+void inputGrades(int (&grades)[GRADE_SCALE]);
+void outputResult(const int(&grades)[GRADE_SCALE]);
+
+int main() {
+	int grades[6] = {};
+
+	printNotation();
+	inputGrades(grades);
+	outputResult(grades);
+
+	return 0;
+}
+
+/* Print some pre-know notation. */
+void printNotation() {
+	cout << "Enter grades between 0 and 5, and separates them by blanks." << endl;
+}
+
+/* Input grades until user press 'Enter'. */
+void inputGrades(int(&grades)[GRADE_SCALE]) {
+	int temp;
+	while (cin >> temp) {			//Return true if the user enters an integer, otherwise false.
+		if (0 <= temp && temp <= 5) {
+			grades[temp]++;
+		}
+		else {
+			cout << "Enter format wrong!\n" << endl;
+			break;
+		}
+
+		if (cin.peek() == '\n') {	//If the "to be test" input is "enter"(\n), break.
+			break;					//Since it means that the user has done the process of enter grades.
+		}
+	}
+}
+
+/* Output the result of the number of each grade scale. */
+void outputResult(const int(&grades)[GRADE_SCALE]) {
+	cout << "Result of all scales of grades: \n";
+	for (int i = 0; i < GRADE_SCALE; i++) {
+		cout << grades[i] << " grades(0) of " << i << endl;
+	}
+}
