@@ -1,0 +1,93 @@
+/* Entering rating of 3 movies and compared to some data set. Then output the predict of ratings of other 3 movies */
+#include<iostream>
+#include<cmath>
+using namespace std;
+
+#define NUM_REVIEWERS 4
+#define NUM_MOVIES 6
+#define NUM_RATINGS 3
+
+// Movie rating of the user-input
+struct MovieRating {
+	int number;
+	int rating;
+};
+
+void printNotation();
+void enterRating(MovieRating(&userRating)[NUM_RATINGS]);
+int findClosestReviewer(const MovieRating(&userRating)[NUM_RATINGS], const int(&reviewersRating)[NUM_REVIEWERS][NUM_MOVIES]);
+void outputPredict(const int(&reviewersRating)[NUM_REVIEWERS][NUM_MOVIES], int predictReviewer);
+
+int main() {
+	//Reviewers' rating
+	int reviewersRatingData[NUM_REVIEWERS][NUM_MOVIES] = {
+		{3, 1, 5, 2, 1, 5},
+		{4, 2, 1, 4, 2, 4},
+		{3, 1, 2, 4, 4, 1},
+		{5, 1, 4, 2, 4, 2}
+	};
+
+	//User's rating
+	MovieRating userRating[NUM_RATINGS] = {};
+
+	printNotation();
+	enterRating(userRating);
+
+	int closestReviewer = findClosestReviewer(userRating, reviewersRatingData);
+
+	outputPredict(reviewersRatingData, closestReviewer);
+
+	return 0;
+}
+
+/* Print some notation that user should know. */
+void printNotation() {
+	cout << "Predict the rating you entered for any three movies (100~105)." << endl;
+	cout << "Then predict the rating of other three movies." << endl << endl;
+}
+
+/* Let the user to enter rating of 3 of the movies. */
+void enterRating(MovieRating(&userRating)[NUM_RATINGS]) {
+	for (int i = 0; i < NUM_RATINGS; i++) {
+		cout << "Enter the number of movie(100 ~ 105): ";
+		cin >> userRating[i].number;
+		cout << "Enter the rating(1 ~ 5): ";
+		cin >> userRating[i].rating;
+	}
+}
+
+/* Find the rating of the reviewers most related to. */
+int findClosestReviewer(const MovieRating(&userRating)[NUM_RATINGS], const int(&reviewersRating)[NUM_REVIEWERS][NUM_MOVIES]) {
+	int minDistance = INT_MAX;
+	int closestReviewer = 0;
+
+	//Compare to each reviewer
+	for (int i = 0; i < NUM_REVIEWERS; i++) {
+		int distance = 0;
+		//Calculate the distance with reviewers
+		for (int j = 0; j < NUM_RATINGS; j++) {
+			int movieIndex = userRating[j].number - 100;
+			int ratingDifference = userRating[j].rating - reviewersRating[i][movieIndex];
+			distance += pow(ratingDifference, 2);
+		}
+		//Find the min distance
+		if (distance < minDistance) {
+			minDistance = distance;
+			closestReviewer = i;
+		}
+	}
+	return closestReviewer;
+}
+
+/* Output the result of the predict. */
+void outputPredict(const int(&reviewersRating)[NUM_REVIEWERS][NUM_MOVIES], int predictReviewer) {
+	cout << "There is the most related predict:" << endl;
+	for (int i = 0; i < NUM_MOVIES; i++) {
+		cout << 100 + i << "\t";
+	}
+	cout << endl;
+	for (int i = 0; i < NUM_MOVIES; i++) {
+		cout << reviewersRating[predictReviewer][i] << "\t";
+	}
+	cout << endl;
+}
